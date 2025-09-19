@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import logo from './assets/pngegg.png'
+import trash from "./assets/lixo.png";
 import btnAdd from './assets/btnAdd.png'
 import { useState } from 'react';
 import { FlashList } from '@shopify/flash-list';
@@ -13,29 +14,43 @@ export default function App() {
      //Alert.alert("TODO List", "Valor:" + tarefa);
      setTarefas([tarefa, ...tarefas]);
   setTarefa("");
-  };
+  }
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item}) => (
+    <View style={styles.viewItemRender}>
     <Text>{item}</Text>
-  };
+    <Checkbox value={false} />
+    <TouchableOpacity>
+      <Image source={trash} />
+    </TouchableOpacity>
+    </View>
+);
   
  return (
     <View style={styles.container}>
       <View style={styles.viewLogo}>
         <Image source={logo} style={styles.logo}/>
+        </View>
          <Text>TODO List</Text>
-      </View>
+         <StatusBar style="auto" />
+
       <View style={styles.viewInput}>
-        <TextInput placeholder='Digite a tarefa'
+        <TextInput
+        placeholder="Digite a tarefa"
         value={tarefa}
-        onChangeText={setTarefa}/> <TouchableOpacity onPress={btnAdicionar}>
-        <Image source={btnAdd} style={styles.btnAdd}/>
+        onChangeText={setTarefa}
+        />
+        
+        <TouchableOpacity onPress={btnAdicionar}>
+        <Image source={btnAdd} style={styles.btnAdd} />
         </TouchableOpacity>
       </View>
+
       <View style={styles.viewTarefas}>
         <FlashList
       data={tarefas}
-      renderItem={({ item }) => <Text>{item}</Text>}
+      renderItem={renderItem}
+      estimatedItemSize={50}
       />
       </View>
 
@@ -73,6 +88,12 @@ const styles = StyleSheet.create({
   },
   viewTarefas: {
     width: "100%",
-    flex: 1
+    flex: 1,
+  },
+  viewItemRender: {
+    height: 50,
+    width: "100%",
+    flexDirection: 'row',
+    gap: 1,
   }
 });
